@@ -1,0 +1,13 @@
+name: PR Checks
+
+on:
+  pull_request:
+    # Triggers on PRs targeting main or team branches
+    branches: [ "main", "*-team", "**/*-team" ]
+
+jobs:
+  Fake-Job: # This exact name satisfies the branch protection rule
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge PR
+        run: echo "This job exists to force branches to be updated before the merging rule works."
