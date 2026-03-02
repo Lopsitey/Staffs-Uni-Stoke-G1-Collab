@@ -1,0 +1,17 @@
+name: Auto Assign Issues To Jake
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  assign-jake:
+    runs-on: ubuntu-latest
+    # Checks all of the asignees logins that were added to see if any of them were the repo owner's
+    # The | char means multiple lines can be used in the if statement
+    if: |
+      !contains(github.event.issue.assignees.*.login, github.repository_owner)
+    steps:
+      - name: Assign Jake
+        run: gh issue edit ${{ github.event.issue.number }} --add-assignee "${{ github.repository_owner }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
