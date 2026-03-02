@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Acknowledge PR
-        run: echo "This job exists, so the force branches to be updated before the merging rule works."
+        run: echo "This job exists to force branches to be updated before the merging rule works."
