@@ -1,0 +1,25 @@
+name: Auto Assign Issues To Jake
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  assign-jake:
+    runs-on: ubuntu-latest
+    # Checks all of the assignees logins that were added to see if any of them were the repo owner's
+    # The | char means multiple lines can be used in the if statement
+    if: |
+      !contains(github.event.issue.assignees.*.login, github.repository_owner)
+    steps:
+    # Clones the repo so it can be checked by the VM 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Assign Jake
+      # The > char allows for the run command to have multiple lines
+        run: >
+          gh issue edit ${{ github.event.issue.number }}
+          --add-assignee "${{ github.repository_owner }}"
+          --repo ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
