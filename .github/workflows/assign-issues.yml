@@ -6,7 +6,7 @@ on:
 jobs:
   assign-jake:
     runs-on: ubuntu-latest
-    # Checks all of the asignees logins that were added to see if any of them were the repo owner's
+    # Checks all of the assignees logins that were added to see if any of them were the repo owner's
     # The | char means multiple lines can be used in the if statement
     if: |
       !contains(github.event.issue.assignees.*.login, github.repository_owner)
