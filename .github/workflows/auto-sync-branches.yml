@@ -1,0 +1,37 @@
+name: Auto-Sync Team Branches
+
+on:
+  push:
+    branches:
+      - main # This workflow only triggers when a push or merge happens on main
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    # The matrix allows us to run this exact job simultaneously for multiple branches
+    strategy:
+      matrix:
+        branch: [tech-team, design-team, art-team, animation-team] 
+      fail-fast: false # If one team branch has a conflict, keep updating the others
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needs access to all of the git history for merging
+          ref: ${{ matrix.branch }}
+          # This tells the action to authenticate using the Deploy Key via SSH (public key)
+          ssh-key: ${{ secrets.SYNC_DEPLOY_KEY }}
+
+      - name: Setup Git Configuration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge Main into Team Branch
+        run: |
+          # Pulls the newest changes from main into the currently checked-out team branch
+          git merge origin/main --no-edit
+          
+          # Pushes the updated team branch back to the repository
+          git push origin ${{ matrix.branch }}
