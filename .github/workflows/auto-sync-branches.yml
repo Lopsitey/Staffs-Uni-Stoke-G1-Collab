@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0 # Needs access to all of the git history for merging
           ref: ${{ matrix.branch }}
           # This tells the action to authenticate using the Deploy Key via SSH (public key)
-          ssh-key: ${{ secrets.SYNC_DEPLOY_KEY }}
+          ssh-key: ${{ secrets.BRANCH_UPDATE_BOT_PRIVATE_KEY }}
 
       - name: Setup Git Configuration
         run: |
