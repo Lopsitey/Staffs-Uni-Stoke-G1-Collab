@@ -1,0 +1,18 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IA_MoveBack.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/BP_GameMode.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/BP_Player1.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IA_MoveForward.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IA_MoveLeft.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IA_MoveRight.uasset",
+				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IMC_Player.uasset"
+			]
+		}
+	]
+}
