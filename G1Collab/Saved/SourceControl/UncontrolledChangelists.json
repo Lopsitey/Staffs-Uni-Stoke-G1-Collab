@@ -5,6 +5,12 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/Design/Sock/BP_GameMode.uasset",
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/BP_GameMode.uasset",
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/Design/Sock/GridFact.uasset",
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/Design/Sock/S_VisualData.uasset",
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/Design/Sock/VisualGrid.uasset",
+				"C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Content/Design/Sock/M_TestLight.uasset",
 				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/input/IA_MoveBack.uasset",
 				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/BP_GameMode.uasset",
 				"C:/Users/m014925n/Documents/Unreal Projects/G1Collab/Content/Character/BP_Player1.uasset",

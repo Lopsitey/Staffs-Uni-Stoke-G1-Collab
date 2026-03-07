@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\greg\\documents\\github\\staffs-uni-stoke-g1-collab\\g1collab\\intermediate\\build\\win64\\unrealeditor\\inc\\g1collab\\uht\\ugridvisualfactory.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\greg\\documents\\github\\staffs-uni-stoke-g1-collab\\g1collab\\intermediate\\build\\win64\\x64\\g1collabeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.inclorderunreal5_3.h.pch",
+        "Includes": [
+            "c:\\users\\greg\\documents\\github\\staffs-uni-stoke-g1-collab\\g1collab\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\g1collab\\definitions.g1collab.h",
+            "c:\\users\\greg\\documents\\github\\staffs-uni-stoke-g1-collab\\g1collab\\source\\g1collab\\public\\grid\\ugridvisualfactory.h",
+            "c:\\users\\greg\\documents\\github\\staffs-uni-stoke-g1-collab\\g1collab\\intermediate\\build\\win64\\unrealeditor\\inc\\g1collab\\uht\\ugridvisualfactory.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
