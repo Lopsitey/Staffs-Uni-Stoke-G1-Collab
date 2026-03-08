@@ -28,9 +28,9 @@ G1COLLAB_API void FCellUpdateSig_DelegateWrapper(const FMulticastScriptDelegate&
 
 // ********** Begin Interface UICell ***************************************************************
 #define FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
-	virtual void UpdateCellTags_Implementation(FGameplayTagContainer inputTags) {}; \
 	DECLARE_FUNCTION(execGetTags); \
-	DECLARE_FUNCTION(execUpdateCellTags); \
+	DECLARE_FUNCTION(execRemoveCellTags); \
+	DECLARE_FUNCTION(execAppendCellTags); \
 	DECLARE_FUNCTION(execQueryTags);
 
 
@@ -74,9 +74,10 @@ protected: \
 public: \
 	typedef UICell UClassType; \
 	typedef IICell ThisClass; \
+	static void Execute_AppendCellTags(UObject* O, FGameplayTagContainer inputTags); \
 	static FGameplayTagContainer Execute_GetTags(UObject* O); \
 	static bool Execute_QueryTags(UObject* O, FGameplayTagQuery query); \
-	static void Execute_UpdateCellTags(UObject* O, FGameplayTagContainer inputTags); \
+	static void Execute_RemoveCellTags(UObject* O, FGameplayTagContainer inputTags); \
 	virtual UObject* _getUObject() const { return nullptr; }
 
 

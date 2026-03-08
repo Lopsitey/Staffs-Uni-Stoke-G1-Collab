@@ -17,8 +17,14 @@ bool UCPPCell::QueryTags_Implementation(FGameplayTagQuery query)
 	return cellTags.MatchesQuery(query);
 }
 
-void UCPPCell::UpdateCell_Implementation(FGameplayTagContainer inputTags)
+void UCPPCell::AppendCellTags_Implementation(FGameplayTagContainer inputTags)
 {
 	cellTags.AppendTags(inputTags);
-	IICell::UpdateCell_Implementation(inputTags);
+	IICell::AppendCellTags_Implementation(inputTags);
+}
+
+void UCPPCell::RemoveCellTags_Implementation(FGameplayTagContainer inputTags)
+{
+	cellTags.RemoveTags(inputTags);
+	IICell::RemoveCellTags_Implementation(inputTags);
 }

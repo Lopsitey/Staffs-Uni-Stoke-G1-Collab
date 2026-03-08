@@ -48,6 +48,70 @@ void FCellUpdateSig_DelegateWrapper(const FMulticastScriptDelegate& CellUpdateSi
 }
 // ********** End Delegate FCellUpdateSig **********************************************************
 
+// ********** Begin Interface UICell Function AppendCellTags ***************************************
+struct ICell_eventAppendCellTags_Parms
+{
+	FGameplayTagContainer inputTags;
+};
+void IICell::AppendCellTags(FGameplayTagContainer inputTags)
+{
+	check(0 && "Do not directly call Event functions in Interfaces. Call Execute_AppendCellTags instead.");
+}
+static FName NAME_UICell_AppendCellTags = FName(TEXT("AppendCellTags"));
+void IICell::Execute_AppendCellTags(UObject* O, FGameplayTagContainer inputTags)
+{
+	check(O != NULL);
+	check(O->GetClass()->ImplementsInterface(UICell::StaticClass()));
+	ICell_eventAppendCellTags_Parms Parms;
+	UFunction* const Func = O->FindFunction(NAME_UICell_AppendCellTags);
+	if (Func)
+	{
+		Parms.inputTags=inputTags;
+		O->ProcessEvent(Func, &Parms);
+	}
+	else if (auto I = (IICell*)(O->GetNativeInterfaceAddress(UICell::StaticClass())))
+	{
+		I->AppendCellTags_Implementation(inputTags);
+	}
+}
+struct Z_Construct_UFunction_UICell_AppendCellTags_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "ICell" },
+		{ "ModuleRelativePath", "Public/Grid/ICell.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_inputTags;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UICell_AppendCellTags_Statics::NewProp_inputTags = { "inputTags", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ICell_eventAppendCellTags_Parms, inputTags), Z_Construct_UScriptStruct_FGameplayTagContainer, METADATA_PARAMS(0, nullptr) }; // 2104890724
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UICell_AppendCellTags_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UICell_AppendCellTags_Statics::NewProp_inputTags,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_AppendCellTags_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UICell_AppendCellTags_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UICell, nullptr, "AppendCellTags", Z_Construct_UFunction_UICell_AppendCellTags_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_AppendCellTags_Statics::PropPointers), sizeof(ICell_eventAppendCellTags_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x0C020C00, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_AppendCellTags_Statics::Function_MetaDataParams), Z_Construct_UFunction_UICell_AppendCellTags_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(ICell_eventAppendCellTags_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UICell_AppendCellTags()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UICell_AppendCellTags_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(IICell::execAppendCellTags)
+{
+	P_GET_STRUCT(FGameplayTagContainer,Z_Param_inputTags);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->AppendCellTags_Implementation(Z_Param_inputTags);
+	P_NATIVE_END;
+}
+// ********** End Interface UICell Function AppendCellTags *****************************************
+
 // ********** Begin Interface UICell Function GetTags **********************************************
 struct ICell_eventGetTags_Parms
 {
@@ -195,22 +259,22 @@ DEFINE_FUNCTION(IICell::execQueryTags)
 }
 // ********** End Interface UICell Function QueryTags **********************************************
 
-// ********** Begin Interface UICell Function UpdateCellTags ***************************************
-struct ICell_eventUpdateCellTags_Parms
+// ********** Begin Interface UICell Function RemoveCellTags ***************************************
+struct ICell_eventRemoveCellTags_Parms
 {
 	FGameplayTagContainer inputTags;
 };
-void IICell::UpdateCellTags(FGameplayTagContainer inputTags)
+void IICell::RemoveCellTags(FGameplayTagContainer inputTags)
 {
-	check(0 && "Do not directly call Event functions in Interfaces. Call Execute_UpdateCellTags instead.");
+	check(0 && "Do not directly call Event functions in Interfaces. Call Execute_RemoveCellTags instead.");
 }
-static FName NAME_UICell_UpdateCellTags = FName(TEXT("UpdateCellTags"));
-void IICell::Execute_UpdateCellTags(UObject* O, FGameplayTagContainer inputTags)
+static FName NAME_UICell_RemoveCellTags = FName(TEXT("RemoveCellTags"));
+void IICell::Execute_RemoveCellTags(UObject* O, FGameplayTagContainer inputTags)
 {
 	check(O != NULL);
 	check(O->GetClass()->ImplementsInterface(UICell::StaticClass()));
-	ICell_eventUpdateCellTags_Parms Parms;
-	UFunction* const Func = O->FindFunction(NAME_UICell_UpdateCellTags);
+	ICell_eventRemoveCellTags_Parms Parms;
+	UFunction* const Func = O->FindFunction(NAME_UICell_RemoveCellTags);
 	if (Func)
 	{
 		Parms.inputTags=inputTags;
@@ -218,10 +282,10 @@ void IICell::Execute_UpdateCellTags(UObject* O, FGameplayTagContainer inputTags)
 	}
 	else if (auto I = (IICell*)(O->GetNativeInterfaceAddress(UICell::StaticClass())))
 	{
-		I->UpdateCellTags_Implementation(inputTags);
+		I->RemoveCellTags_Implementation(inputTags);
 	}
 }
-struct Z_Construct_UFunction_UICell_UpdateCellTags_Statics
+struct Z_Construct_UFunction_UICell_RemoveCellTags_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -233,40 +297,41 @@ struct Z_Construct_UFunction_UICell_UpdateCellTags_Statics
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UICell_UpdateCellTags_Statics::NewProp_inputTags = { "inputTags", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ICell_eventUpdateCellTags_Parms, inputTags), Z_Construct_UScriptStruct_FGameplayTagContainer, METADATA_PARAMS(0, nullptr) }; // 2104890724
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UICell_UpdateCellTags_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UICell_UpdateCellTags_Statics::NewProp_inputTags,
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UICell_RemoveCellTags_Statics::NewProp_inputTags = { "inputTags", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(ICell_eventRemoveCellTags_Parms, inputTags), Z_Construct_UScriptStruct_FGameplayTagContainer, METADATA_PARAMS(0, nullptr) }; // 2104890724
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UICell_RemoveCellTags_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UICell_RemoveCellTags_Statics::NewProp_inputTags,
 };
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_UpdateCellTags_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UICell_UpdateCellTags_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UICell, nullptr, "UpdateCellTags", Z_Construct_UFunction_UICell_UpdateCellTags_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_UpdateCellTags_Statics::PropPointers), sizeof(ICell_eventUpdateCellTags_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x0C020C00, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_UpdateCellTags_Statics::Function_MetaDataParams), Z_Construct_UFunction_UICell_UpdateCellTags_Statics::Function_MetaDataParams)},  };
-static_assert(sizeof(ICell_eventUpdateCellTags_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_UICell_UpdateCellTags()
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_RemoveCellTags_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UICell_RemoveCellTags_Statics::FuncParams = { { (UObject*(*)())Z_Construct_UClass_UICell, nullptr, "RemoveCellTags", Z_Construct_UFunction_UICell_RemoveCellTags_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_RemoveCellTags_Statics::PropPointers), sizeof(ICell_eventRemoveCellTags_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x0C020C00, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UICell_RemoveCellTags_Statics::Function_MetaDataParams), Z_Construct_UFunction_UICell_RemoveCellTags_Statics::Function_MetaDataParams)},  };
+static_assert(sizeof(ICell_eventRemoveCellTags_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UICell_RemoveCellTags()
 {
 	static UFunction* ReturnFunction = nullptr;
 	if (!ReturnFunction)
 	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UICell_UpdateCellTags_Statics::FuncParams);
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UICell_RemoveCellTags_Statics::FuncParams);
 	}
 	return ReturnFunction;
 }
-DEFINE_FUNCTION(IICell::execUpdateCellTags)
+DEFINE_FUNCTION(IICell::execRemoveCellTags)
 {
 	P_GET_STRUCT(FGameplayTagContainer,Z_Param_inputTags);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->UpdateCellTags_Implementation(Z_Param_inputTags);
+	P_THIS->RemoveCellTags_Implementation(Z_Param_inputTags);
 	P_NATIVE_END;
 }
-// ********** End Interface UICell Function UpdateCellTags *****************************************
+// ********** End Interface UICell Function RemoveCellTags *****************************************
 
 // ********** Begin Interface UICell ***************************************************************
 void UICell::StaticRegisterNativesUICell()
 {
 	UClass* Class = UICell::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "AppendCellTags", &IICell::execAppendCellTags },
 		{ "GetTags", &IICell::execGetTags },
 		{ "QueryTags", &IICell::execQueryTags },
-		{ "UpdateCellTags", &IICell::execUpdateCellTags },
+		{ "RemoveCellTags", &IICell::execRemoveCellTags },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -310,9 +375,10 @@ struct Z_Construct_UClass_UICell_Statics
 #endif // WITH_METADATA
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_UICell_AppendCellTags, "AppendCellTags" }, // 2407303863
 		{ &Z_Construct_UFunction_UICell_GetTags, "GetTags" }, // 1291715588
 		{ &Z_Construct_UFunction_UICell_QueryTags, "QueryTags" }, // 3792840781
-		{ &Z_Construct_UFunction_UICell_UpdateCellTags, "UpdateCellTags" }, // 740996007
+		{ &Z_Construct_UFunction_UICell_RemoveCellTags, "RemoveCellTags" }, // 1071993439
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -356,10 +422,10 @@ DEFINE_VTABLE_PTR_HELPER_CTOR(UICell);
 struct Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h__Script_G1Collab_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UICell, UICell::StaticClass, TEXT("UICell"), &Z_Registration_Info_UClass_UICell, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UICell), 2938060461U) },
+		{ Z_Construct_UClass_UICell, UICell::StaticClass, TEXT("UICell"), &Z_Registration_Info_UClass_UICell, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UICell), 2173439704U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h__Script_G1Collab_882969777(TEXT("/Script/G1Collab"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h__Script_G1Collab_224097242(TEXT("/Script/G1Collab"),
 	Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h__Script_G1Collab_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_ICell_h__Script_G1Collab_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

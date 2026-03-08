@@ -1,4 +1,5 @@
 /I "."
+/I "C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Source/G1Collab/Private"
 /I "../Intermediate/Build/Win64/UnrealEditor/Inc/CoreUObject/UHT"
 /I "../Intermediate/Build/Win64/UnrealEditor/Inc/CoreUObject/VerseVMBytecode"
 /I "Runtime/CoreUObject/Public"
@@ -10,6 +11,7 @@
 /I "Runtime/CorePreciseFP/Public"
 /I "C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Intermediate/Build/Win64/UnrealEditor/Inc/G1Collab/UHT"
 /I "C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Source"
+/I "C:/Users/Greg/Documents/GitHub/Staffs-Uni-Stoke-G1-Collab/G1Collab/Source/G1Collab/Public"
 /I "../Intermediate/Build/Win64/UnrealEditor/Inc/Engine/UHT"
 /I "Runtime/Engine/Classes"
 /I "Runtime/Engine/Public"

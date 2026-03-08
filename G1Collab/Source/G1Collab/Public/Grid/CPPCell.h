@@ -11,7 +11,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class G1COLLAB_API UCPPCell : public UObject, public IICell
 {
 	GENERATED_BODY()
@@ -22,6 +22,7 @@ class G1COLLAB_API UCPPCell : public UObject, public IICell
 	FGameplayTagContainer cellTags;
 
 	bool QueryTags_Implementation(FGameplayTagQuery query) override;
-	void UpdateCell_Implementation(FGameplayTagContainer inputTags) override;
+	virtual void AppendCellTags_Implementation(FGameplayTagContainer inputTags) override;
+	virtual void RemoveCellTags_Implementation(FGameplayTagContainer inputTags) override;
 	FGameplayTagContainer GetTags_Implementation() override {return cellTags;};
 };

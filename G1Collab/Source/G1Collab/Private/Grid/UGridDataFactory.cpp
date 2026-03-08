@@ -21,19 +21,6 @@ void UUGridDataFactory::ConstructGrid(UObject* Leveldata)
 		for (int y = 0; y <= 2; y++)
 		{
 			
-			FGameplayTagContainer cellTag = FGameplayTagContainer();
-			if (FMath::RandBool())
-			{
-				cellTag.AddTag(UGameplayTagsManager::Get().RequestGameplayTag("cellTag.Floor"));
-			}
-			else
-			{
-				cellTag.AddTag(UGameplayTagsManager::Get().RequestGameplayTag("cellTag.Empty"));
-				cellTag.AddTag(UGameplayTagsManager::Get().RequestGameplayTag("cellTag.State.Shadow"));
-			}			UCPPCell* cell = NewObject<UCPPCell>();
-			cell->UpdateCell_Implementation(cellTag);
-			
-			cellInformation.Add(FVector2D(x,y),cell);
 			
 		}
 	}

@@ -58,10 +58,12 @@ struct Z_Construct_UClass_UCPPCell_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/**\n * \n */" },
 #endif
 		{ "IncludePath", "Grid/CPPCell.h" },
+		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "Public/Grid/CPPCell.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_cellTags_MetaData[] = {
@@ -89,7 +91,7 @@ UObject* (*const Z_Construct_UClass_UCPPCell_Statics::DependentSingletons[])() =
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UCPPCell_Statics::DependentSingletons) < 16);
 const UECodeGen_Private::FImplementedInterfaceParams Z_Construct_UClass_UCPPCell_Statics::InterfaceParams[] = {
-	{ Z_Construct_UClass_UICell_NoRegister, (int32)VTABLE_OFFSET(UCPPCell, IICell), false },  // 2938060461
+	{ Z_Construct_UClass_UICell_NoRegister, (int32)VTABLE_OFFSET(UCPPCell, IICell), false },  // 2173439704
 };
 const UECodeGen_Private::FClassParams Z_Construct_UClass_UCPPCell_Statics::ClassParams = {
 	&UCPPCell::StaticClass,
@@ -122,10 +124,10 @@ UCPPCell::~UCPPCell() {}
 struct Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_CPPCell_h__Script_G1Collab_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCPPCell, UCPPCell::StaticClass, TEXT("UCPPCell"), &Z_Registration_Info_UClass_UCPPCell, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCPPCell), 2824280939U) },
+		{ Z_Construct_UClass_UCPPCell, UCPPCell::StaticClass, TEXT("UCPPCell"), &Z_Registration_Info_UClass_UCPPCell, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCPPCell), 1481538217U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_CPPCell_h__Script_G1Collab_1045721524(TEXT("/Script/G1Collab"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_CPPCell_h__Script_G1Collab_3155688386(TEXT("/Script/G1Collab"),
 	Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_CPPCell_h__Script_G1Collab_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_G1Collab_Source_G1Collab_Public_Grid_CPPCell_h__Script_G1Collab_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

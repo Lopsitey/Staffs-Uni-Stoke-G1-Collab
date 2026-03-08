@@ -29,9 +29,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	bool QueryTags(FGameplayTagQuery query);
 	virtual bool QueryTags_Implementation(FGameplayTagQuery query){return false;};
+
+
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
-	void UpdateCellTags(FGameplayTagContainer inputTags);
-	virtual void UpdateCell_Implementation(FGameplayTagContainer inputTags){};
+	void AppendCellTags(FGameplayTagContainer inputTags);
+	virtual void AppendCellTags_Implementation(FGameplayTagContainer inputTags){};
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
+	void RemoveCellTags(FGameplayTagContainer inputTags);
+	virtual void RemoveCellTags_Implementation(FGameplayTagContainer inputTags){};
+
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	FGameplayTagContainer GetTags();
 	virtual FGameplayTagContainer GetTags_Implementation(){return FGameplayTagContainer();};

@@ -16,45 +16,54 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
-// ********** Begin Class UMyClass *****************************************************************
-G1COLLAB_API UClass* Z_Construct_UClass_UMyClass_NoRegister();
+// ********** Begin ScriptStruct FLevelCellData ****************************************************
+#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_13_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FLevelCellData_Statics; \
+	G1COLLAB_API static class UScriptStruct* StaticStruct();
 
-#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_15_INCLASS_NO_PURE_DECLS \
+
+struct FLevelCellData;
+// ********** End ScriptStruct FLevelCellData ******************************************************
+
+// ********** Begin Class ULevelDataAsset **********************************************************
+G1COLLAB_API UClass* Z_Construct_UClass_ULevelDataAsset_NoRegister();
+
+#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_28_INCLASS_NO_PURE_DECLS \
 private: \
-	static void StaticRegisterNativesUMyClass(); \
-	friend struct Z_Construct_UClass_UMyClass_Statics; \
+	static void StaticRegisterNativesULevelDataAsset(); \
+	friend struct Z_Construct_UClass_ULevelDataAsset_Statics; \
 	static UClass* GetPrivateStaticClass(); \
-	friend G1COLLAB_API UClass* Z_Construct_UClass_UMyClass_NoRegister(); \
+	friend G1COLLAB_API UClass* Z_Construct_UClass_ULevelDataAsset_NoRegister(); \
 public: \
-	DECLARE_CLASS2(UMyClass, UPrimaryDataAsset, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/G1Collab"), Z_Construct_UClass_UMyClass_NoRegister) \
-	DECLARE_SERIALIZER(UMyClass)
+	DECLARE_CLASS2(ULevelDataAsset, UPrimaryDataAsset, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/G1Collab"), Z_Construct_UClass_ULevelDataAsset_NoRegister) \
+	DECLARE_SERIALIZER(ULevelDataAsset)
 
 
-#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_28_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API UMyClass(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
+	NO_API ULevelDataAsset(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	/** Deleted move- and copy-constructors, should never be used */ \
-	UMyClass(UMyClass&&) = delete; \
-	UMyClass(const UMyClass&) = delete; \
-	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, UMyClass); \
-	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UMyClass); \
-	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UMyClass) \
-	NO_API virtual ~UMyClass();
+	ULevelDataAsset(ULevelDataAsset&&) = delete; \
+	ULevelDataAsset(const ULevelDataAsset&) = delete; \
+	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, ULevelDataAsset); \
+	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(ULevelDataAsset); \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(ULevelDataAsset) \
+	NO_API virtual ~ULevelDataAsset();
 
 
-#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_12_PROLOG
-#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_15_GENERATED_BODY \
+#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_25_PROLOG
+#define FID_G1Collab_Source_G1Collab_Public_LevelData_h_28_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_G1Collab_Source_G1Collab_Public_LevelData_h_15_INCLASS_NO_PURE_DECLS \
-	FID_G1Collab_Source_G1Collab_Public_LevelData_h_15_ENHANCED_CONSTRUCTORS \
+	FID_G1Collab_Source_G1Collab_Public_LevelData_h_28_INCLASS_NO_PURE_DECLS \
+	FID_G1Collab_Source_G1Collab_Public_LevelData_h_28_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-class UMyClass;
+class ULevelDataAsset;
 
-// ********** End Class UMyClass *******************************************************************
+// ********** End Class ULevelDataAsset ************************************************************
 
 #undef CURRENT_FILE_ID
 #define CURRENT_FILE_ID FID_G1Collab_Source_G1Collab_Public_LevelData_h
