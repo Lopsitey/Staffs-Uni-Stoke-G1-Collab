@@ -15,6 +15,10 @@ enum ELayerType
 #include "Subsystems/WorldSubsystem.h"
 #include "GridDataWorldSubsystem.generated.h"
 
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAllCellsFoundSigniture);
+
+
 /**
  * 
  */
@@ -46,4 +50,8 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	TMap<FVector2D,UObject*> DataLayer;
 	UPROPERTY(EditAnywhere)
 	TMap<FVector2D,UObject*> DynamicLayer;
+
+	public:
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FAllCellsFoundSigniture OnAllCellsFound;
 };
