@@ -39,7 +39,8 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	//CellManagement
 	UFUNCTION(BlueprintCallable)
 	void AddCellToDataLayer(FVector2D GridPos, UObject* cell) {DataLayer.Add(GridPos,cell);}
-	
+	UFUNCTION(BlueprintCallable)
+	UObject* GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated);
 	
 	
 	UFUNCTION(BlueprintCallable)

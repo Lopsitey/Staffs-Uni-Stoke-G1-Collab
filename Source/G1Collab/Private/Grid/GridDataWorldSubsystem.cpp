@@ -41,16 +41,30 @@ void UGridDataWorldSubsystem::RemoveTagFromCell(FVector2D Key, FGameplayTagConta
 	
 }
 
+UObject* UGridDataWorldSubsystem::GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated)
+{
+	if(DataLayer.Contains(GridPos))
+	{
+
+		UObject* cell = *DataLayer.Find(GridPos);
+		bCellLocated = true;
+		return cell;
+	}
+	bCellLocated = false;
+	return nullptr;	
+}
+
 UObject* UGridDataWorldSubsystem::GetObjectFromDynamicLayer(FVector2D GridPos, bool& bItemFound)
 {
 
 	if(DynamicLayer.Contains(GridPos))
 	{
 
-		UObject* cell = *DataLayer.Find(GridPos);
+		UObject* cell = *DynamicLayer.Find(GridPos);
+		bItemFound = true;
 		return cell;
 	}
-
+	bItemFound = false;
 	return nullptr;
 }
 
