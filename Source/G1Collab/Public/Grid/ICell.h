@@ -7,8 +7,7 @@
 #include "UObject/Interface.h"
 #include "ICell.generated.h"
 
-UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCellUpdateSig);
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI,BlueprintType, Blueprintable)
 class UICell : public UInterface
@@ -30,7 +29,6 @@ public:
 	bool QueryTags(FGameplayTagQuery query);
 	virtual bool QueryTags_Implementation(FGameplayTagQuery query){return false;};
 
-
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	void AppendCellTags(FGameplayTagContainer inputTags);
 	virtual void AppendCellTags_Implementation(FGameplayTagContainer inputTags){};
@@ -39,6 +37,11 @@ public:
 	void RemoveCellTags(FGameplayTagContainer inputTags);
 	virtual void RemoveCellTags_Implementation(FGameplayTagContainer inputTags){};
 
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
+	int32 GetCellData(FName Key);
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
+	void SetCellData(FName Key, int32 Value);
+	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	FGameplayTagContainer GetTags();
 	virtual FGameplayTagContainer GetTags_Implementation(){return FGameplayTagContainer();};
