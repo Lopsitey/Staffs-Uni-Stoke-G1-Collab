@@ -18,16 +18,15 @@ class G1COLLAB_API UCPPCell : public UObject, public IICell
 	GENERATED_BODY()
 	public:
 	UCPPCell();
-	UPROPERTY(EditAnywhere,blueprintReadWrite)
-	FGameplayTagContainer cellTags;
+	
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ICell")
 	FCellUpdateSig OnCellTagsUpdated;
 
 	UPROPERTY(BlueprintReadOnly, Category = "ICell")
-	TMap<FName,int32> CellData;
-	FORCEINLINE int32 GetCellData_Implementation(FName Key) {return *CellData.Find(Key);}
-	FORCEINLINE void SetCellData_Implementation(FName Key, int32 Value) {CellData.Add(Key,Value);}
+	TMap<FGameplayTag,int32> CellTags;
+	FORCEINLINE int32 GetCellData_Implementation(FGameplayTag Key) {return *CellTags.Find(Key);}
+	FORCEINLINE void SetCellData_Implementation(FGameplayTag Key, int32 Value) {CellTags.Add(Key,Value);}
 
 
 
@@ -35,5 +34,5 @@ class G1COLLAB_API UCPPCell : public UObject, public IICell
 	bool QueryTags_Implementation(FGameplayTagQuery query) override;
 	virtual void AppendCellTags_Implementation(FGameplayTagContainer inputTags) override;
 	virtual void RemoveCellTags_Implementation(FGameplayTagContainer inputTags) override;
-	FGameplayTagContainer GetTags_Implementation() override {return cellTags;};
+	FGameplayTagContainer GetTags_Implementation() override ;
 };
