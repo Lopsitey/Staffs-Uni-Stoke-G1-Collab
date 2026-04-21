@@ -3,6 +3,7 @@
 
 #include "Grid/GridDataWorldSubsystem.h"
 
+#include "Grid/CPPCell.h"
 #include "Grid/ICell.h"
 
 void UGridDataWorldSubsystem::AddTagToCell(FVector2D Key, FGameplayTagContainer TagsToAdd)
@@ -41,14 +42,13 @@ void UGridDataWorldSubsystem::RemoveTagFromCell(FVector2D Key, FGameplayTagConta
 	
 }
 
-UObject* UGridDataWorldSubsystem::GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated)
+UCPPCell* UGridDataWorldSubsystem::GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated)
 {
 	if(DataLayer.Contains(GridPos))
 	{
-
 		UObject* cell = *DataLayer.Find(GridPos);
 		bCellLocated = true;
-		return cell;
+		return Cast<UCPPCell>(cell);
 	}
 	bCellLocated = false;
 	return nullptr;	
