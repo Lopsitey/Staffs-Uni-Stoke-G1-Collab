@@ -43,7 +43,8 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	void AddCellToDataLayer(FVector2D GridPos, UObject* cell) {DataLayer.Add(GridPos,cell);}
 	UFUNCTION(BlueprintCallable)
 	UCPPCell* GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated);
-	
+	UFUNCTION(BlueprintCallable)
+	void ClearDataLayer(){DataLayer.Empty();}
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void OverrideDataLayer(TMap<FVector2D,UObject*> newLayer ){DataLayer = newLayer;};
@@ -56,7 +57,8 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	UObject* GetObjectFromDynamicLayer(FVector2D GridPos,bool& bItemFound);
 	UFUNCTION(BlueprintCallable)
 	void RemoveObjectFromDynamicLayer(FVector2D GridPos);
-
+	UFUNCTION(BlueprintCallable)
+	void ClearDynamicLayer() {DynamicLayer.Empty();};
 
 	UFUNCTION(BlueprintCallable)	
 	TMap<FVector2D,UObject*> GetDataLayer() {return DataLayer;}
