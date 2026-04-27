@@ -3,6 +3,8 @@
 #pragma once
 #include "GameplayTagContainer.h"
 
+class UCPPCell;
+
 UENUM()
 enum ELayerType
 {
@@ -40,7 +42,7 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable)
 	void AddCellToDataLayer(FVector2D GridPos, UObject* cell) {DataLayer.Add(GridPos,cell);}
 	UFUNCTION(BlueprintCallable)
-	UObject* GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated);
+	UCPPCell* GetCellFromDataLayer(FVector2D GridPos, bool& bCellLocated);
 	
 	
 	UFUNCTION(BlueprintCallable)
