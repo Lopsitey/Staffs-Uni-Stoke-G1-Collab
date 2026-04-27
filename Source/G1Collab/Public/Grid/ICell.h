@@ -31,11 +31,11 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	void AppendCellTags(FGameplayTagContainer inputTags);
-	virtual void AppendCellTags_Implementation(FGameplayTagContainer inputTags){};
+	
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	void RemoveCellTags(FGameplayTagContainer inputTags);
-	virtual void RemoveCellTags_Implementation(FGameplayTagContainer inputTags){};
+	
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	int32 GetCellData(FName Key);
