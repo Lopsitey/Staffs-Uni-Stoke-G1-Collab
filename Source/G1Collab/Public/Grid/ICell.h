@@ -38,9 +38,9 @@ public:
 	
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
-	int32 GetCellData(FName Key);
+	int32 GetCellData(FGameplayTag Key);
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
-	void SetCellData(FName Key, int32 Value);
+	void SetCellData(FGameplayTag Key, int32 Value);
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "ICell")
 	FGameplayTagContainer GetTags();
