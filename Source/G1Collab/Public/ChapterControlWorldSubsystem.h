@@ -23,6 +23,8 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UPROPERTY(BlueprintReadOnly)
 	int32 LevelIndex;
 
+
+	
 	UPROPERTY(BlueprintAssignable)
 	FLevelLoadedSignature OnLevelLoaded;
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
@@ -38,7 +40,8 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void DecrementLevelIndex() {LevelIndex--;};
 
-	
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetLevelIndex(int32 Index) {LevelIndex = Index;}
 	
 	
 	UFUNCTION(BlueprintCallable)
