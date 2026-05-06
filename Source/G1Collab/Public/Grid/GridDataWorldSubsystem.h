@@ -19,7 +19,7 @@ enum ELayerType
 
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAllCellsFoundSigniture);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSunUpdate);
 
 /**
  * 
@@ -75,4 +75,6 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	public:
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FAllCellsFoundSigniture OnAllCellsFound;
+	UPROPERTY(BlueprintAssignable,BlueprintCallable)
+	FOnSunUpdate OnSunUpdate;
 };
