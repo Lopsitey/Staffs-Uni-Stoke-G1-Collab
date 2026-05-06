@@ -11,11 +11,12 @@ USTRUCT(BlueprintType,Blueprintable)
 struct FLevelCellData
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere,blueprintreadwrite)
-	FVector2D cellPosition;
-	UPROPERTY(EditAnywhere,blueprintreadwrite)
-	FGameplayTagContainer cellTags;
-	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FVector2D cellPosition = FVector2D::ZeroVector;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FGameplayTagContainer cellTags = FGameplayTagContainer();
+
+
 	
 };
 
@@ -27,6 +28,6 @@ class G1COLLAB_API ULevelDataAsset : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 	public:
-	UPROPERTY(EditAnywhere,blueprintreadwrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<FLevelCellData> cellData;
 };
