@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DA_ChapterData.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "ChapterControlWorldSubsystem.generated.h"
 
@@ -24,11 +25,19 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UPROPERTY(BlueprintReadOnly)
 	int32 LevelIndex;
 
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UDA_ChapterData> ChapterData;
+	TArray<FName> LevelNameArray;
+
+	
 	UPROPERTY(BlueprintAssignable)
 	FLevelLoadedSignature OnLevelLoaded;
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FBeginLevelUnLoad BeginLevelUnLoad;
 	
+	UFUNCTION(BlueprintCallable)
+	void  SetChapterData(UDA_ChapterData* inData);
+
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int32 GetLevelIndex(){return LevelIndex;}
@@ -39,8 +48,7 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void DecrementLevelIndex() {LevelIndex--;};
 
-	
-	
+	FORCEINLINE void SetLevelIndex(int32 InLevelIndex) {LevelIndex = InLevelIndex;};
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void ResetLevelIndex() {LevelIndex = 0;}
