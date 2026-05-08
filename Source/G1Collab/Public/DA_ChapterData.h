@@ -21,7 +21,7 @@ class G1COLLAB_API UDA_ChapterData : public UPrimaryDataAsset
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
 	FSoftWorldReference Chapter;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
-	FSoftWorldReference NextChapter;
+	TSoftObjectPtr<UDA_ChapterData> NextChapter;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
 	FName ChapterName;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Data")
