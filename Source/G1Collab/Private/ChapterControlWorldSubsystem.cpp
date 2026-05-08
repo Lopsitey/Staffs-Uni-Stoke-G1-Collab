@@ -5,18 +5,30 @@
 
 #include "Kismet/GameplayStatics.h"
 
+void UChapterControlWorldSubsystem::SetChapterData(UDA_ChapterData* inData)
+{
+	ChapterData = inData;
+}
+
 bool UChapterControlWorldSubsystem::LoadLevel(int index)
 {
-	TArray<ULevelStreaming*> Levels = GetWorld()->GetStreamingLevels();
-	if (GetWorld()->GetStreamingLevels().IsValidIndex(index))
+
+	if (ChapterData == nullptr)
 	{
-		Levels[index]->SetShouldBeLoaded(true);
-		Levels[index]->SetShouldBeVisible(true);
-		Levels[index]->OnLevelLoaded.AddDynamic(this, &UChapterControlWorldSubsystem::CallLevelLoaded);
+		return false;
+	}
+
+	if (ChapterData->LevelNameArray.IsValidIndex(index))
+	{
+		ULevelStreaming* Level = UGameplayStatics::GetStreamingLevel(this,ChapterData->LevelNameArray[index]);
+		if (Level == nullptr) {return false;}
+
+		Level->SetShouldBeLoaded(true);
+		Level->SetShouldBeVisible(true);
+		Level->OnLevelLoaded.AddDynamic(this, &UChapterControlWorldSubsystem::CallLevelLoaded);
 		lastUsedLevelIndex = index;
 		return true;
-	}
-	else
+	}else
 	{
 		return false;
 	}
@@ -24,11 +36,19 @@ bool UChapterControlWorldSubsystem::LoadLevel(int index)
 
 bool UChapterControlWorldSubsystem::UnloadLevel(int index)
 {
-	TArray<ULevelStreaming*> Levels = GetWorld()->GetStreamingLevels();
-	if (Levels.IsValidIndex(index))
+	
+	if (ChapterData == nullptr)
 	{
-		Levels[index]->SetShouldBeLoaded(false);
-		Levels[index]->SetShouldBeVisible(false);
+		return false;
+	}
+
+	if (ChapterData->LevelNameArray.IsValidIndex(index))
+	{
+		ULevelStreaming* Level = UGameplayStatics::GetStreamingLevel(this,ChapterData->LevelNameArray[index]);
+		if (Level == nullptr) {return false;}
+
+		Level->SetShouldBeLoaded(false);
+		Level->SetShouldBeVisible(false);
 		lastUsedLevelIndex = index;
 		return true;
 	}
@@ -36,6 +56,8 @@ bool UChapterControlWorldSubsystem::UnloadLevel(int index)
 	{
 		return false;
 	}
+
+	
 }
 
 void UChapterControlWorldSubsystem::CallLevelLoaded()
