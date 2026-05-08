@@ -60,6 +60,8 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable)
 	void ClearDynamicLayer() {DynamicLayer.Empty();};
 
+	UFUNCTION(BlueprintCallable)
+	void ClearSystem(){DynamicLayer.Empty(); DataLayer.Empty();};
 	UFUNCTION(BlueprintCallable)	
 	TMap<FVector2D,UObject*> GetDataLayer() {return DataLayer;}
 	UFUNCTION(BlueprintCallable)	
