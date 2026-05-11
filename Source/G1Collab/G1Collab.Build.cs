@@ -8,7 +8,7 @@ public class G1Collab : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayTags" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","GameplayTags", "MetasoundEngine" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
