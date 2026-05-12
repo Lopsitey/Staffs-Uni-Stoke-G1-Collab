@@ -45,11 +45,12 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void IncrementLevelIndex() {LevelIndex++;};
 
+
+	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void DecrementLevelIndex() {LevelIndex--;};
-
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetLevelIndex(int32 InLevelIndex) {LevelIndex = InLevelIndex;};
-	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void ResetLevelIndex() {LevelIndex = 0;}
 	
