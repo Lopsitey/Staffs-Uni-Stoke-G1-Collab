@@ -34,5 +34,12 @@
 			"Name": "CodeView",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Android",
+		"IOS",
+		"Linux",
+		"Mac",
+		"Windows"
 	]
 }
