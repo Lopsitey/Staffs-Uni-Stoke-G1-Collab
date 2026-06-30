@@ -55,10 +55,13 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	FORCEINLINE void ResetLevelIndex() {LevelIndex = 0;}
 	
 	UFUNCTION(BlueprintCallable, Category = "Level Instance World Subsystem")
-	bool LoadLevel(int index);
+	bool LoadLevel(int index, FName LevelName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Level Instance World Subsystem")
 	bool UnloadLevel(int index);
+	
+	UFUNCTION(BlueprintPure, Category = "Level Tools")
+	bool TryGetOnlyVisibleSublevelName(FName& OutLevelName) const;
 
 
 private:
