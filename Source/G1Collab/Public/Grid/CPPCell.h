@@ -9,6 +9,9 @@
 #include "CPPCell.generated.h"
 UDELEGATE()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCellUpdateSig, FGameplayTagContainer,Tags);
+UDELEGATE()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLightUpdateSig);
+
 /**
  *  Data only, used to query the state of a tile
  */
@@ -22,7 +25,10 @@ class G1COLLAB_API UCPPCell : public UObject, public IICell
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ICell")
 	FCellUpdateSig OnCellTagsUpdated;
-
+	
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ICell")
+	FLightUpdateSig OnLightTagsUpdated;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "ICell")
 	TMap<FGameplayTag,int32> CellTags;
 	FORCEINLINE int32 GetCellData_Implementation(FGameplayTag Key) {return *CellTags.Find(Key);}
