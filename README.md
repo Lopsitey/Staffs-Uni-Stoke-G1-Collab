@@ -10,21 +10,9 @@ This repository contains the Unreal Engine 5 project files for **Steps To The St
 
 The original prototype was created as part of the Staffordshire University Junior/Senior Collaboration project and has since become the basis for a commercial game project.
 
-Current public prototype page:  
-https://zacincz.itch.io/steps-to-the-stars
-
-## Features
-
-- Single-player puzzle adventure gameplay
-- Two-character puzzle-solving mechanics
-- Hand-crafted environmental puzzles
-- Keyboard, mouse, controller and touch input support
-- Windows and Android prototype builds
-
 ## Repository notice
 
-This repository is provided for reference, collaboration and project history. It is **not an open-source commercial-use repository**.
-
+This is **not an open-source commercial-use repository**.
 Please review the licence terms before using, copying, modifying or distributing any part of this project.
 
 ## Licence
