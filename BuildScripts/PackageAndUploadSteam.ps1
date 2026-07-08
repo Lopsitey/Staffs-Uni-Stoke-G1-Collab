@@ -8,6 +8,7 @@ param(
 
     [switch] $Preview,
     [switch] $SkipUpload,
+    [switch] $ArchivePackage,
     [switch] $AllowDirtyWorkingTree,
     [switch] $SkipBranchConfirmation,
     [switch] $SkipLiveConfirmation,
@@ -92,6 +93,30 @@ function Get-SteamBranchForGitBranch {
     throw "Current Git branch '$BranchName' is not valid for Steam upload. Use a branch name containing dev, beta, or live."
 }
 
+function Remove-PackageArchive {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $OutputRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string] $SteamPackageRoot
+    )
+
+    if (-not (Test-Path -LiteralPath $OutputRoot)) {
+        return
+    }
+
+    $ResolvedOutputRoot = (Resolve-Path -LiteralPath $OutputRoot).Path.TrimEnd('\', '/')
+    $ResolvedSteamPackageRoot = (Resolve-Path -LiteralPath $SteamPackageRoot).Path.TrimEnd('\', '/')
+    $ExpectedPrefix = $ResolvedSteamPackageRoot + [System.IO.Path]::DirectorySeparatorChar
+
+    if (-not $ResolvedOutputRoot.StartsWith($ExpectedPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Refusing to delete package archive outside Steam package root. Path: $ResolvedOutputRoot"
+    }
+
+    Remove-Item -LiteralPath $ResolvedOutputRoot -Recurse -Force
+}
+
 $ProjectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $ProjectFile = Join-Path $ProjectRoot "G1Collab.uproject"
 $ProjectConfig = Get-Content -Raw -LiteralPath $ProjectFile | ConvertFrom-Json
@@ -172,7 +197,8 @@ try {
         }
     }
 
-    $OutputRoot = Join-Path $ProjectRoot "Saved\CI\SteamPackage\$Timestamp-$BranchName-$CommitHash"
+    $SteamPackageRoot = Join-Path $ProjectRoot "Saved\CI\SteamPackage"
+    $OutputRoot = Join-Path $SteamPackageRoot "$Timestamp-$BranchName-$CommitHash"
     $PackageOut = Join-Path $OutputRoot $Platform
     $SteamPipeOut = Join-Path $ProjectRoot "Saved\CI\SteamPipeOutput"
     $TempVdf = Join-Path $ProjectRoot "Saved\CI\steam_app_build_$Timestamp.vdf"
@@ -205,6 +231,8 @@ try {
         "-pak",
         "-archive",
         "-archivedirectory=$PackageOut",
+        "-prereqs",
+        "-nodebuginfo",
         "-NoP4",
         "-utf8output"
     )
@@ -212,7 +240,7 @@ try {
     & $RunUAT @UatArgs
     Assert-NativeSuccess "Unreal packaging failed."
 
-    $Exe = Get-ChildItem -LiteralPath $PackageOut -Recurse -File -Filter "StepsToTheStars.exe" | Select-Object -First 1
+    $Exe = Get-ChildItem -LiteralPath $PackageOut -Recurse -File -Filter "$GameTarget.exe" | Select-Object -First 1
     if (-not $Exe) {
         $Exe = Get-ChildItem -LiteralPath $PackageOut -Recurse -File -Filter "*.exe" |
             Where-Object { $_.Name -notlike "*Prereq*" } |
@@ -291,6 +319,17 @@ try {
         Remove-Item -LiteralPath $TempVdf -Force -ErrorAction SilentlyContinue
         Write-Host ""
         Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
+
+        if ($ArchivePackage) {
+            Write-Host "Archived package kept at: $OutputRoot"
+        }
+        elseif ($Preview) {
+            Write-Host "Steam preview mode was enabled; package kept at: $OutputRoot"
+        }
+        else {
+            Write-Host "Deleting local packaged build after successful Steam upload: $OutputRoot"
+            Remove-PackageArchive -OutputRoot $OutputRoot -SteamPackageRoot $SteamPackageRoot
+        }
     }
 
     $ScriptExitCode = 0
