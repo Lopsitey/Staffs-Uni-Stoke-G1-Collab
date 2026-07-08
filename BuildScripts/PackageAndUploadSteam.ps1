@@ -103,6 +103,7 @@ $LogRoot = Join-Path $ProjectRoot "Saved\CI\Logs"
 $LogPath = Join-Path $LogRoot "PackageAndUploadSteam-$Timestamp.log"
 New-Item -ItemType Directory -Force -Path $LogRoot | Out-Null
 
+$ScriptExitCode = 1
 $TranscriptStarted = $false
 try {
     Start-Transcript -Path $LogPath -Force | Out-Null
@@ -240,6 +241,7 @@ try {
     Write-Host ""
 
     $PreviewValue = if ($Preview) { "1" } else { "0" }
+    $SetLiveBranch = if ($SteamBranch -eq "default") { "" } else { $SteamBranch }
     $Vdf = @"
 "AppBuild"
 {
@@ -247,7 +249,7 @@ try {
     "Desc" "Auto upload from $BranchName commit $CommitHash"
     "Verbose" "1"
     "Preview" "$PreviewValue"
-    "SetLive" "$SteamBranch"
+    "SetLive" "$SetLiveBranch"
 
     "ContentRoot" "$PackageOut"
     "BuildOutput" "$SteamPipeOut"
@@ -274,19 +276,29 @@ try {
 
     $Vdf | Set-Content -Path $TempVdf -Encoding ASCII
     Write-Host "Generated Steam build script: $TempVdf"
+    if ($SteamBranch -eq "default") {
+        Write-Host "Steam default builds cannot be set live automatically; set this build live in Steamworks after upload."
+    }
 
     if ($SkipUpload) {
         Write-Host "Skipping Steam upload because -SkipUpload was supplied."
-        return
+    }
+    else {
+        $SteamArgs = @("+login", $SteamUsername, "+run_app_build", $TempVdf, "+quit")
+        & $SteamCMD @SteamArgs
+        Assert-NativeSuccess "Steam upload failed."
+
+        Remove-Item -LiteralPath $TempVdf -Force -ErrorAction SilentlyContinue
+        Write-Host ""
+        Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
     }
 
-    $SteamArgs = @("+login", $SteamUsername, "+run_app_build", $TempVdf, "+quit")
-    & $SteamCMD @SteamArgs
-    Assert-NativeSuccess "Steam upload failed."
-
-    Remove-Item -LiteralPath $TempVdf -Force -ErrorAction SilentlyContinue
+    $ScriptExitCode = 0
+}
+catch {
     Write-Host ""
-    Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
+    Write-Host "ERROR: $($_.Exception.Message)" -ForegroundColor Red
+    $ScriptExitCode = 1
 }
 finally {
     if ($TranscriptStarted) {
@@ -294,3 +306,5 @@ finally {
         Write-Host "Transcript saved to $LogPath"
     }
 }
+
+exit $ScriptExitCode
