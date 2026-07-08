@@ -12,6 +12,11 @@
 				"CoreUObject",
 				"Engine"
 			]
+		},
+		{
+			"Name": "G1CollabEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
