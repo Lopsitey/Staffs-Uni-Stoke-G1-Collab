@@ -148,7 +148,7 @@ try {
         -EnvironmentVariable "STEAMCMD_EXE" `
         -Candidates @(
             $env:STEAMCMD_EXE,
-            "C:\Users\Jake Astles\Downloads\steamworks_sdk_164\sdk\tools\ContentBuilder\builder\steamcmd.exe",
+            "C:\Program Files (x86)\Steam\steamworks_sdk_164\sdk\tools\ContentBuilder\builder\steamcmd.exe",
             "C:\Program Files (x86)\Steam\steamcmd.exe"
         )
 
