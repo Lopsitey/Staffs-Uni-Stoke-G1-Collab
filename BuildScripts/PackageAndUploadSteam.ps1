@@ -87,7 +87,7 @@ function Get-SteamBranchForGitBranch {
     }
 
     if ($LowerBranch.Contains("dev")) {
-        return "dev"
+        return "developer"
     }
 
     throw "Current Git branch '$BranchName' is not valid for Steam upload. Use a branch name containing dev, beta, or live."
@@ -126,6 +126,7 @@ $GameTarget = "StepsToTheStars"
 $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $LogRoot = Join-Path $ProjectRoot "Saved\CI\Logs"
 $LogPath = Join-Path $LogRoot "PackageAndUploadSteam-$Timestamp.log"
+$SteamCmdLogPath = Join-Path $LogRoot "SteamCMD-$Timestamp.log"
 New-Item -ItemType Directory -Force -Path $LogRoot | Out-Null
 
 $ScriptExitCode = 1
@@ -313,12 +314,49 @@ try {
     }
     else {
         $SteamArgs = @("+login", $SteamUsername, "+run_app_build", $TempVdf, "+quit")
-        & $SteamCMD @SteamArgs
-        Assert-NativeSuccess "Steam upload failed."
+        $SteamUploadStarted = Get-Date
+        & $SteamCMD @SteamArgs 2>&1 | Tee-Object -FilePath $SteamCmdLogPath
+        $SteamExitCode = $LASTEXITCODE
+        $ManualBranchAssignmentRequired = $false
+
+        if ($SteamExitCode -ne 0 -and -not [string]::IsNullOrWhiteSpace($SetLiveBranch)) {
+            $AppBuildLog = Join-Path $SteamPipeOut "app_build_$SteamAppId.log"
+            $DepotBuildLog = Join-Path $SteamPipeOut "depot_build_$SteamDepotId.log"
+            $LogCutoff = $SteamUploadStarted.AddSeconds(-5)
+            $AppLogIsCurrent = (Test-Path -LiteralPath $AppBuildLog) -and
+                ((Get-Item -LiteralPath $AppBuildLog).LastWriteTime -ge $LogCutoff)
+            $DepotLogIsCurrent = (Test-Path -LiteralPath $DepotBuildLog) -and
+                ((Get-Item -LiteralPath $DepotBuildLog).LastWriteTime -ge $LogCutoff)
+            $AppCommitFailed = $AppLogIsCurrent -and
+                (Select-String -LiteralPath $AppBuildLog -SimpleMatch "Failed to commit build" -Quiet)
+            $DepotUploadSucceeded = $DepotLogIsCurrent -and
+                (Select-String -LiteralPath $DepotBuildLog -SimpleMatch "Success! New manifestID" -Quiet)
+
+            if ($AppCommitFailed -and $DepotUploadSucceeded) {
+                Write-Warning "Steam uploaded the depot but rejected automatic assignment to branch '$SetLiveBranch'. Retrying the app build without SetLive."
+                $SetLiveLine = '    "SetLive" "{0}"' -f $SetLiveBranch
+                $Vdf = $Vdf.Replace($SetLiveLine, '    "SetLive" ""')
+                $Vdf | Set-Content -Path $TempVdf -Encoding ASCII
+
+                & $SteamCMD @SteamArgs 2>&1 | Tee-Object -FilePath $SteamCmdLogPath -Append
+                $SteamExitCode = $LASTEXITCODE
+                $ManualBranchAssignmentRequired = $SteamExitCode -eq 0
+            }
+        }
+
+        if ($SteamExitCode -ne 0) {
+            throw "Steam upload failed. Exit code: $SteamExitCode. SteamCMD log: $SteamCmdLogPath"
+        }
 
         Remove-Item -LiteralPath $TempVdf -Force -ErrorAction SilentlyContinue
         Write-Host ""
-        Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
+        if ($ManualBranchAssignmentRequired) {
+            Write-Host "Done. Uploaded $BranchName / $CommitHash, but Steam did not accept automatic branch assignment."
+            Write-Host "Assign the newest build to Steam branch '$SteamBranch' on the Steamworks App Builds page."
+        }
+        else {
+            Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
+        }
 
         if ($ArchivePackage) {
             Write-Host "Archived package kept at: $OutputRoot"

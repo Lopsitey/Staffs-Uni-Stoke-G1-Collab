@@ -55,7 +55,7 @@ private:
 
 		if (LowerBranch.Contains(TEXT("dev")))
 		{
-			OutSteamBranch = TEXT("dev");
+			OutSteamBranch = TEXT("developer");
 			return true;
 		}
 
