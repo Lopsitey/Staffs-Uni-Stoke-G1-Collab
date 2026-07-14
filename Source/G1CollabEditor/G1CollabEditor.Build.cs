@@ -8,12 +8,14 @@ public class G1CollabEditor : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
+			"Blutility",
 			"Core",
 			"CoreUObject",
 			"Engine",
 			"Slate",
 			"SlateCore",
 			"ToolMenus",
+			"UMG",
 			"UnrealEd"
 		});
 	}
