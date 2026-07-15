@@ -37,3 +37,8 @@ For commercial licensing or project enquiries, contact Celestial Studios Interac
 
 Full prototype credits are listed on the itch.io page:
 https://zacincz.itch.io/steps-to-the-stars
+
+
+##Crash Reporting
+
+Unreal crash reports go to GitHub issues, so we are notified immediately. Please do not put any sensitive information in crash reports as they will be visible on this public repository.
