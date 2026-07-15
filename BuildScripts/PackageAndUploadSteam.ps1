@@ -140,8 +140,8 @@ try {
         -EnvironmentVariable "UE_RUNUAT" `
         -Candidates @(
             $env:UE_RUNUAT,
-            "C:\Program Files\Epic Games\UE_$EngineAssociation\Engine\Build\BatchFiles\RunUAT.bat",
-            "C:\Program Files\Epic Games\UE_5.6\Engine\Build\BatchFiles\RunUAT.bat"
+            "D:\Program Files\Epic Games\UE_$EngineAssociation\Engine\Build\BatchFiles\RunUAT.bat",
+            "D:\Program Files\Epic Games\UE_5.6\Engine\Build\BatchFiles\RunUAT.bat"
         )
 
     $SteamCMD = Get-RequiredPath `
