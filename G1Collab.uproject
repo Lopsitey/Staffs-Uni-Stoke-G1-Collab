@@ -21,6 +21,10 @@
 	],
 	"Plugins": [
 		{
+			"Name": "ActorSequence",
+			"Enabled": false
+		},
+		{
 			"Name": "AlembicImporter",
 			"Enabled": false
 		},
@@ -29,11 +33,43 @@
 			"Enabled": false
 		},
 		{
+			"Name": "AppleImageUtils",
+			"Enabled": false
+		},
+		{
 			"Name": "AnimationModifierLibrary",
 			"Enabled": false
 		},
 		{
+			"Name": "AnimationSharing",
+			"Enabled": false
+		},
+		{
+			"Name": "ArchVisCharacter",
+			"Enabled": false
+		},
+		{
+			"Name": "AutomationUtils",
+			"Enabled": false
+		},
+		{
+			"Name": "BackChannel",
+			"Enabled": false
+		},
+		{
 			"Name": "BlendSpaceMotionAnalysis",
+			"Enabled": false
+		},
+		{
+			"Name": "BlueprintHeaderView",
+			"Enabled": false
+		},
+		{
+			"Name": "CableComponent",
+			"Enabled": false
+		},
+		{
+			"Name": "Cascade",
 			"Enabled": false
 		},
 		{
@@ -49,6 +85,10 @@
 			"Enabled": false
 		},
 		{
+			"Name": "CharacterAI",
+			"Enabled": false
+		},
+		{
 			"Name": "ChaosEditor",
 			"Enabled": false
 		},
@@ -57,11 +97,31 @@
 			"Enabled": false
 		},
 		{
+			"Name": "ChaosUserDataPT",
+			"Enabled": false
+		},
+		{
 			"Name": "ChaosVD",
 			"Enabled": false
 		},
 		{
+			"Name": "ChunkDownloader",
+			"Enabled": false
+		},
+		{
+			"Name": "CLionSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "CodeLiteSourceCodeAccess",
+			"Enabled": false
+		},
+		{
 			"Name": "CodeView",
+			"Enabled": false
+		},
+		{
+			"Name": "CmdLinkServer",
 			"Enabled": false
 		},
 		{
@@ -70,6 +130,14 @@
 		},
 		{
 			"Name": "ControlRigSpline",
+			"Enabled": false
+		},
+		{
+			"Name": "CryptoKeys",
+			"Enabled": false
+		},
+		{
+			"Name": "CustomMeshComponent",
 			"Enabled": false
 		},
 		{
@@ -82,6 +150,34 @@
 		},
 		{
 			"Name": "DumpGPUServices",
+			"Enabled": false
+		},
+		{
+			"Name": "EditorDebugTools",
+			"Enabled": false
+		},
+		{
+			"Name": "EditorPerformance",
+			"Enabled": true
+		},
+		{
+			"Name": "EditorTelemetry",
+			"Enabled": false
+		},
+		{
+			"Name": "EnvironmentQueryEditor",
+			"Enabled": false
+		},
+		{
+			"Name": "ExampleDeviceProfileSelector",
+			"Enabled": false
+		},
+		{
+			"Name": "FacialAnimation",
+			"Enabled": false
+		},
+		{
+			"Name": "FastBuildController",
 			"Enabled": false
 		},
 		{
@@ -105,6 +201,10 @@
 			"Enabled": false
 		},
 		{
+			"Name": "GeometryMode",
+			"Enabled": false
+		},
+		{
 			"Name": "GLTFExporter",
 			"Enabled": false
 		},
@@ -113,7 +213,27 @@
 			"Enabled": false
 		},
 		{
+			"Name": "ImgMedia",
+			"Enabled": false
+		},
+		{
 			"Name": "IoStoreInsights",
+			"Enabled": false
+		},
+		{
+			"Name": "KDevelopSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "LauncherChunkInstaller",
+			"Enabled": false
+		},
+		{
+			"Name": "LocalizableMessage",
+			"Enabled": false
+		},
+		{
+			"Name": "LocationServicesBPLibrary",
 			"Enabled": false
 		},
 		{
@@ -121,11 +241,27 @@
 			"Enabled": false
 		},
 		{
+			"Name": "MediaCompositing",
+			"Enabled": false
+		},
+		{
+			"Name": "MediaPlate",
+			"Enabled": false
+		},
+		{
 			"Name": "MeshLODToolset",
 			"Enabled": false
 		},
 		{
+			"Name": "MeshPainting",
+			"Enabled": false
+		},
+		{
 			"Name": "MetaHumanSDK",
+			"Enabled": false
+		},
+		{
+			"Name": "MobilePatchingUtils",
 			"Enabled": false
 		},
 		{
@@ -140,12 +276,32 @@
 			"Enabled": true
 		},
 		{
+			"Name": "MsQuic",
+			"Enabled": false
+		},
+		{
+			"Name": "N10XSourceCodeAccess",
+			"Enabled": false
+		},
+		{
 			"Name": "NFORDenoise",
+			"Enabled": false
+		},
+		{
+			"Name": "NiagaraSimCaching",
 			"Enabled": false
 		},
 		{
 			"Name": "OnlineSubsystemSteam",
 			"Enabled": true
+		},
+		{
+			"Name": "OodleNetwork",
+			"Enabled": false
+		},
+		{
+			"Name": "Paper2D",
+			"Enabled": false
 		},
 		{
 			"Name": "PerforceSourceControl",
@@ -160,7 +316,15 @@
 			"Enabled": false
 		},
 		{
+			"Name": "PortableObjectFileDataSource",
+			"Enabled": false
+		},
+		{
 			"Name": "RenderDocPlugin",
+			"Enabled": false
+		},
+		{
+			"Name": "ResonanceAudio",
 			"Enabled": false
 		},
 		{
@@ -168,7 +332,23 @@
 			"Enabled": false
 		},
 		{
+			"Name": "RuntimeTelemetry",
+			"Enabled": false
+		},
+		{
 			"Name": "SkeletalMeshModelingTools",
+			"Enabled": false
+		},
+		{
+			"Name": "SkeletalReduction",
+			"Enabled": false
+		},
+		{
+			"Name": "SpeedTreeImporter",
+			"Enabled": false
+		},
+		{
+			"Name": "SoundFields",
 			"Enabled": false
 		},
 		{
@@ -176,7 +356,51 @@
 			"Enabled": false
 		},
 		{
+			"Name": "Synthesis",
+			"Enabled": false
+		},
+		{
+			"Name": "TcpMessaging",
+			"Enabled": false
+		},
+		{
+			"Name": "ToolPresets",
+			"Enabled": false
+		},
+		{
+			"Name": "UdpMessaging",
+			"Enabled": false
+		},
+		{
+			"Name": "UObjectPlugin",
+			"Enabled": false
+		},
+		{
 			"Name": "UVEditor",
+			"Enabled": false
+		},
+		{
+			"Name": "WebMMedia",
+			"Enabled": false
+		},
+		{
+			"Name": "WebMMoviePlayer",
+			"Enabled": false
+		},
+		{
+			"Name": "WorldMetrics",
+			"Enabled": false
+		},
+		{
+			"Name": "WorldPartitionHLODUtilities",
+			"Enabled": false
+		},
+		{
+			"Name": "XCodeSourceCodeAccess",
+			"Enabled": false
+		},
+		{
+			"Name": "XGEController",
 			"Enabled": false
 		}
 	],
