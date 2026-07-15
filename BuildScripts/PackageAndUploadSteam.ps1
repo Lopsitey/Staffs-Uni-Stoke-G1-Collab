@@ -234,6 +234,7 @@ try {
         "-archivedirectory=$PackageOut",
         "-prereqs",
         "-nodebuginfo",
+        "-CrashReporter",
         "-NoP4",
         "-utf8output"
     )

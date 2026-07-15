@@ -75,3 +75,9 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 /.idea
+
+# Local crash endpoint credentials
+Tools/CrashReporter/.env
+Tools/CrashReporter/.dev.vars
+Tools/CrashReporter/node_modules/
+Tools/CrashReporter/.wrangler/
