@@ -71,26 +71,49 @@ function Get-RequiredPath {
     throw "Could not find $Name. Set $EnvironmentVariable to the full path and run this script again."
 }
 
-function Get-SteamBranchForGitBranch {
+function Get-SteamUploadTarget {
     param(
         [Parameter(Mandatory = $true)]
         [string] $BranchName
     )
 
     $LowerBranch = $BranchName.ToLowerInvariant()
+
+    # Depot/app selection is only controlled by the "demo" keyword.
+    # Anything else (including branches with no special keywords) targets the main game.
+    $IsDemo = $LowerBranch.Contains("demo")
+    if ($IsDemo) {
+        $AppId = "4927910"
+        $DepotId = "4927911"
+        $TargetName = "Steps To The Stars Demo"
+    }
+    else {
+        $AppId = "4926600"
+        $DepotId = "4926601"
+        $TargetName = "Steps To The Stars"
+    }
+
+    # Steam branch selection is independent of demo/main and uses live/beta/dev.
     if ($LowerBranch.Contains("live")) {
-        return "default"
+        $SteamBranch = "default"
+    }
+    elseif ($LowerBranch.Contains("beta")) {
+        $SteamBranch = "beta"
+    }
+    elseif ($LowerBranch.Contains("dev")) {
+        $SteamBranch = "developer"
+    }
+    else {
+        throw "Current Git branch '$BranchName' is missing a Steam branch modifier. Include live, beta, or dev (for example demo-dev or beta). The word demo only chooses the demo depot."
     }
 
-    if ($LowerBranch.Contains("beta")) {
-        return "beta"
+    return [pscustomobject]@{
+        IsDemo      = $IsDemo
+        AppId       = $AppId
+        DepotId     = $DepotId
+        TargetName  = $TargetName
+        SteamBranch = $SteamBranch
     }
-
-    if ($LowerBranch.Contains("dev")) {
-        return "developer"
-    }
-
-    throw "Current Git branch '$BranchName' is not valid for Steam upload. Use a branch name containing dev, beta, or live."
 }
 
 function Remove-PackageArchive {
@@ -153,8 +176,6 @@ try {
             "C:\Program Files (x86)\Steam\steamcmd.exe"
         )
 
-    $SteamAppId = if ($env:STEAM_APP_ID) { $env:STEAM_APP_ID } else { "4927910" }
-    $SteamDepotId = if ($env:STEAM_DEPOT_ID) { $env:STEAM_DEPOT_ID } else { "4927911" }
     $SteamUsername = if ($env:STEAM_USERNAME) { $env:STEAM_USERNAME } else { "davr547" }
 
     $BranchName = (& git -C $ProjectRoot rev-parse --abbrev-ref HEAD).Trim()
@@ -163,7 +184,11 @@ try {
     $CommitHash = (& git -C $ProjectRoot rev-parse --short HEAD).Trim()
     Assert-NativeSuccess "Failed to detect the current Git commit."
 
-    $SteamBranch = Get-SteamBranchForGitBranch -BranchName $BranchName
+    $UploadTarget = Get-SteamUploadTarget -BranchName $BranchName
+    $SteamAppId = if ($env:STEAM_APP_ID) { $env:STEAM_APP_ID } else { $UploadTarget.AppId }
+    $SteamDepotId = if ($env:STEAM_DEPOT_ID) { $env:STEAM_DEPOT_ID } else { $UploadTarget.DepotId }
+    $SteamBranch = $UploadTarget.SteamBranch
+    $SteamTargetName = $UploadTarget.TargetName
 
     $GitStatus = & git -C $ProjectRoot status --porcelain
     Assert-NativeSuccess "Failed to check Git working tree state."
@@ -174,14 +199,15 @@ try {
     }
 
     if (-not $SkipBranchConfirmation) {
-        $BranchConfirmation = Read-Host "Upload Git branch '$BranchName' to Steam branch '$SteamBranch'? Type Y to continue"
+        $DepotLabel = if ($UploadTarget.IsDemo) { "demo depot" } else { "main depot" }
+        $BranchConfirmation = Read-Host "Upload Git branch '$BranchName' to $DepotLabel ($SteamTargetName, App $SteamAppId / Depot $SteamDepotId), Steam branch '$SteamBranch'? Type Y to continue"
         if ($BranchConfirmation -notin @("Y", "y", "Yes", "yes")) {
             throw "Cancelled before packaging."
         }
     }
 
     if ($SteamBranch -eq "default" -and -not $SkipLiveConfirmation) {
-        $Confirmation = Read-Host "Type UPLOAD DEFAULT to package Git branch '$BranchName' and upload to Steam default"
+        $Confirmation = Read-Host "Type UPLOAD DEFAULT to package Git branch '$BranchName' and upload to $SteamTargetName Steam default"
         if ($Confirmation -ne "UPLOAD DEFAULT") {
             throw "Cancelled before Steam default upload."
         }
@@ -213,6 +239,9 @@ try {
 
     Write-Host "Project: $ProjectFile"
     Write-Host "Git branch: $BranchName"
+    Write-Host "Steam target: $SteamTargetName"
+    Write-Host "Steam App ID: $SteamAppId"
+    Write-Host "Steam Depot ID: $SteamDepotId"
     Write-Host "Steam branch: $SteamBranch"
     Write-Host "Commit: $CommitHash"
     Write-Host "Configuration: $Configuration"
@@ -352,11 +381,11 @@ try {
         Remove-Item -LiteralPath $TempVdf -Force -ErrorAction SilentlyContinue
         Write-Host ""
         if ($ManualBranchAssignmentRequired) {
-            Write-Host "Done. Uploaded $BranchName / $CommitHash, but Steam did not accept automatic branch assignment."
+            Write-Host "Done. Uploaded $BranchName / $CommitHash to $SteamTargetName (App $SteamAppId / Depot $SteamDepotId), but Steam did not accept automatic branch assignment."
             Write-Host "Assign the newest build to Steam branch '$SteamBranch' on the Steamworks App Builds page."
         }
         else {
-            Write-Host "Done. Uploaded $BranchName / $CommitHash to Steam branch '$SteamBranch'."
+            Write-Host "Done. Uploaded $BranchName / $CommitHash to $SteamTargetName (App $SteamAppId / Depot $SteamDepotId) Steam branch '$SteamBranch'."
         }
 
         if ($ArchivePackage) {
