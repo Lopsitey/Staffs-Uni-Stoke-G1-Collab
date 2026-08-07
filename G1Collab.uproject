@@ -402,6 +402,10 @@
 		{
 			"Name": "XGEController",
 			"Enabled": false
+		},
+		{
+			"Name": "BlueprintPerfLens",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
