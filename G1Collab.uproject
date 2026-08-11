@@ -405,7 +405,7 @@
 		},
 		{
 			"Name": "BlueprintPerfLens",
-			"Enabled": true
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
