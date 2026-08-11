@@ -11,6 +11,6 @@ public class G1CollabEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
 
-		ExtraModuleNames.AddRange( new string[] { "G1Collab" } );
+		ExtraModuleNames.AddRange( new string[] { "G1Collab", "G1CollabEditor" } );
 	}
 }
