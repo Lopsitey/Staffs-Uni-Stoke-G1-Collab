@@ -402,18 +402,6 @@
 		{
 			"Name": "XGEController",
 			"Enabled": false
-		},
-		{
-			"Name": "BlueprintPerfLens",
-			"Enabled": false
-		},
-		{
-			"Name": "BlueprintPerfAnalyst",
-			"Enabled": true
-		},
-		{
-			"Name": "EditorDiscordRichPresence",
-			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
