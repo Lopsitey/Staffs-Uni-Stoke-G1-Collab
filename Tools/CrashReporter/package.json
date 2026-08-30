@@ -1,0 +1,15 @@
+{
+  "name": "stts-crash-to-github",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "wrangler": "^4.110.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
