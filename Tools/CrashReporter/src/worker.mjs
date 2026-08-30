@@ -101,6 +101,13 @@ function html(value, limit) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function formatMemoryBytes(value) {
+  const bytes = Number(value);
+  if (!Number.isFinite(bytes) || bytes <= 0) return value || 'Unknown';
+  const gb = (bytes / (1024 * 1024 * 1024)).toFixed(1);
+  return `${gb} GB`;
+}
+
 export function issueFromCrash(compressed) {
   const files = decodeUeCrash(compressed);
   const contextFile = files.get('crashcontext.runtime-xml');
@@ -118,6 +125,38 @@ export function issueFromCrash(compressed) {
   const platform = xmlValue(xml, 'PlatformName') || xmlValue(xml, 'PlatformFullName') || 'Unknown';
   const version = xmlValue(xml, 'EngineVersion') || 'Unknown';
   const configuration = xmlValue(xml, 'BuildConfiguration') || 'Unknown';
+
+  const cpu = xmlValue(xml, 'CPUInfo') || xmlValue(xml, 'CPUBrand') || xmlValue(xml, 'Processor') || 'Unknown';
+  const cpuCores = xmlValue(xml, 'NumberOfCores') || '';
+  const cpuThreads = xmlValue(xml, 'NumberOfCoresIncludingHyperthreads') || '';
+  let cpuDetails = cpu;
+  if (cpuCores || cpuThreads) {
+    const coreDetails = [
+      cpuCores ? `${cpuCores} cores` : '',
+      cpuThreads ? `${cpuThreads} threads` : '',
+    ].filter(Boolean).join(', ');
+    if (coreDetails && !cpuDetails.includes(cpuCores)) {
+      cpuDetails = `${cpuDetails} (${coreDetails})`;
+    }
+  }
+
+  const gpu = xmlValue(xml, 'PrimaryGPUBrand') || xmlValue(xml, 'GPUAdapter') || 'Unknown';
+  const gpuDriver = xmlValue(xml, 'DriverVersion') || '';
+  const rhi = xmlValue(xml, 'RHIName') || '';
+  let gpuDetails = gpu;
+  if (gpuDriver || rhi) {
+    const extra = [rhi ? `RHI: ${rhi}` : '', gpuDriver ? `Driver: ${gpuDriver}` : ''].filter(Boolean).join(', ');
+    if (extra) gpuDetails = `${gpuDetails} (${extra})`;
+  }
+
+  const totalRamRaw = xmlValue(xml, 'TotalPhysicalRAM');
+  const availRamRaw = xmlValue(xml, 'AvailablePhysicalRAM');
+  let ramDetails = totalRamRaw ? formatMemoryBytes(totalRamRaw) : 'Unknown';
+  if (totalRamRaw && availRamRaw) {
+    ramDetails = `${formatMemoryBytes(totalRamRaw)} (Available: ${formatMemoryBytes(availRamRaw)})`;
+  }
+
+  const osVersion = xmlValue(xml, 'OSVersionBuild') || xmlValue(xml, 'OSVersion') || xmlValue(xml, 'PlatformFullName') || platform;
   const summary = plainText(error.split('\n').find(Boolean), 120);
 
   return {
@@ -127,6 +166,8 @@ export function issueFromCrash(compressed) {
       '', '### Player comment', `<pre>${html(comment, 2000)}</pre>`,
       '', '### Error', `<pre>${html(error, 4000)}</pre>`,
       '', '### Call stack', `<pre>${html(stack, 12000)}</pre>`,
+      '', '### System & Hardware Specs',
+      `<pre>OS: ${html(osVersion, 120)}\nCPU: ${html(cpuDetails, 150)}\nGPU: ${html(gpuDetails, 150)}\nRAM: ${html(ramDetails, 100)}</pre>`,
       '', '### Build',
       `<pre>Game: ${html(game, 100)}\nPlatform: ${html(platform, 100)}\nConfiguration: ${html(configuration, 40)}\nEngine: ${html(version, 100)}</pre>`,
       '', '### Sanitised log (last 20,000 characters)', `<pre>${html(log.slice(-20000), 20000)}</pre>`,

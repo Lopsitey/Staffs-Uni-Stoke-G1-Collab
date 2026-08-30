@@ -32,6 +32,15 @@ const xml = Buffer.from(`<FGenericCrashContext>
 <BuildConfiguration>Shipping</BuildConfiguration><EngineVersion>5.6.1</EngineVersion>
 <UserDescription>Please help @maintainer &amp; thanks</UserDescription>
 <ErrorMessage>Fatal test</ErrorMessage><CallStack>Game!Crash()</CallStack>
+<CPUInfo>AMD Ryzen 7 7700X</CPUInfo>
+<NumberOfCores>8</NumberOfCores>
+<NumberOfCoresIncludingHyperthreads>16</NumberOfCoresIncludingHyperthreads>
+<PrimaryGPUBrand>NVIDIA GeForce RTX 4070</PrimaryGPUBrand>
+<DriverVersion>560.81</DriverVersion>
+<RHIName>D3D12</RHIName>
+<TotalPhysicalRAM>34282835968</TotalPhysicalRAM>
+<AvailablePhysicalRAM>17141417984</AvailablePhysicalRAM>
+<OSVersionBuild>10.0.19045.6466</OSVersionBuild>
 </FGenericCrashContext>`);
 const archive = crashArchive(new Map([
   ['CrashContext.runtime-xml', xml],
@@ -43,6 +52,10 @@ test('turns Unreal comment, error, stack and log into safe issue text', () => {
   assert.equal(issue.title, '[Crash] Fatal test');
   assert.match(issue.body, /Please help @\u200bmaintainer &amp; thanks/);
   assert.match(issue.body, /Game!Crash\(\)/);
+  assert.match(issue.body, /CPU: AMD Ryzen 7 7700X \(8 cores, 16 threads\)/);
+  assert.match(issue.body, /GPU: NVIDIA GeForce RTX 4070 \(RHI: D3D12, Driver: 560\.81\)/);
+  assert.match(issue.body, /RAM: 31\.9 GB \(Available: 16\.0 GB\)/);
+  assert.match(issue.body, /OS: 10\.0\.19045\.6466/);
   assert.match(issue.body, /Users\\\[redacted\]/);
   assert.match(issue.body, /token=\[redacted\]/);
   assert.match(issue.body, /\[redacted-email\]/);
