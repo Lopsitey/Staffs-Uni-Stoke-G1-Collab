@@ -53,30 +53,18 @@ bool UChapterControlWorldSubsystem::LoadLevel(int index, FName LevelName = NAME_
 	}
 }
 
-bool UChapterControlWorldSubsystem::UnloadLevel(int index)
+bool UChapterControlWorldSubsystem::UnloadLevel(const int Index)
 {
-	
-	if (ChapterData == nullptr)
-	{
+	if (ChapterData == nullptr || ChapterData->LevelNameArray.IsValidIndex(Index) == false) 
 		return false;
-	}
-
-	if (ChapterData->LevelNameArray.IsValidIndex(index))
-	{
-		ULevelStreaming* Level = UGameplayStatics::GetStreamingLevel(this,ChapterData->LevelNameArray[index]);
-		if (Level == nullptr) {return false;}
-
-		Level->SetShouldBeLoaded(false);
-		Level->SetShouldBeVisible(false);
-		lastUsedLevelIndex = index;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
 	
+	ULevelStreaming* Level = UGameplayStatics::GetStreamingLevel(this,ChapterData->LevelNameArray[Index]);
+	if (Level == nullptr) return false;
+
+	Level->SetShouldBeLoaded(false);
+	Level->SetShouldBeVisible(false);
+	lastUsedLevelIndex = Index;
+	return true;
 }
 
 void UChapterControlWorldSubsystem::CallLevelLoaded()
