@@ -35,17 +35,32 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FBeginLevelUnLoad BeginLevelUnLoad;
 	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Level Instance World Subsystem")
+	int32 ClumpedLevelsRemaining;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Level Instance World Subsystem")
+	int32 TotalClumpedLevels;
+	
+	UFUNCTION(BlueprintCallable, Category="Level Instance World Subsystem")
+	bool IsLevelClumped() const {return ClumpedLevelsRemaining > 0;}
+
+	UFUNCTION(BlueprintCallable)
+	void DecrementClumpedLevelsRemaining() {ClumpedLevelsRemaining--;}
+	
+	bool IsFirstClumpedLevel() const {return ClumpedLevelsRemaining == TotalClumpedLevels - 1;}
+	
+	UFUNCTION(BlueprintCallable)// Bloops in if it's a normal level or the first clumped one
+	bool ShouldBloopIn() const {return !IsLevelClumped() || IsFirstClumpedLevel();}
+	
 	UFUNCTION(BlueprintCallable)
 	void  SetChapterData(UDA_ChapterData* inData);
-
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int32 GetLevelIndex(){return LevelIndex;}
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void IncrementLevelIndex() {LevelIndex++;};
-
-
+	
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void DecrementLevelIndex() {LevelIndex--;};
@@ -58,7 +73,7 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	bool LoadLevel(int index, FName LevelName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Level Instance World Subsystem")
-	bool UnloadLevel(int index);
+	bool UnloadLevel(int Index);
 	
 	UFUNCTION(BlueprintPure, Category = "Level Tools")
 	bool TryGetOnlyVisibleSublevelName(FName& OutLevelName) const;
