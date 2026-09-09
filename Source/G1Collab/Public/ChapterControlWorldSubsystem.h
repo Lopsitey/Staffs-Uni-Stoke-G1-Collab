@@ -75,11 +75,15 @@ class G1COLLAB_API UChapterControlWorldSubsystem : public UWorldSubsystem
 	UFUNCTION(BlueprintCallable, Category = "Level Instance World Subsystem")
 	bool UnloadLevel(int Index);
 	
+	// Finds the only editor-visible sublevel and resolves its chapter-data index.
 	UFUNCTION(BlueprintPure, Category = "Level Tools")
-	bool TryGetOnlyVisibleSublevelName(FName& OutLevelName) const;
+	bool TryGetOnlyVisibleSublevel(FName& OutLevelName, int32& OutLevelIndex) const;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Level Tools")
+	FName VisibleSublevelName;
 
 private:
+
 	UFUNCTION()
 	void CallLevelLoaded();
 

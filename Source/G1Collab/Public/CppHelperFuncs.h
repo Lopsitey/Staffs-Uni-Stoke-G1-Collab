@@ -29,4 +29,7 @@ class G1COLLAB_API UCppHelperFuncs : public UBlueprintFunctionLibrary
 
 		return nullptr;
 	}
+
+	UFUNCTION(BlueprintPure, Category="Rendering")
+	static bool IsRunningSM5();
 };
