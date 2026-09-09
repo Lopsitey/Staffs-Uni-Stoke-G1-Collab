@@ -47,10 +47,8 @@ bool UChapterControlWorldSubsystem::LoadLevel(int index, FName LevelName = NAME_
 		Level->OnLevelLoaded.AddDynamic(this, &UChapterControlWorldSubsystem::CallLevelLoaded);
 		lastUsedLevelIndex = index;
 		return true;
-	}else
-	{
-		return false;
 	}
+	return false;
 }
 
 bool UChapterControlWorldSubsystem::UnloadLevel(const int Index)
@@ -74,81 +72,76 @@ void UChapterControlWorldSubsystem::CallLevelLoaded()
 	GetWorld()->GetStreamingLevels()[lastUsedLevelIndex]->OnLevelLoaded.RemoveAll(this);
 }
 
-bool UChapterControlWorldSubsystem::TryGetOnlyVisibleSublevelName(
-	FName& OutLevelName) const
+//If only one sublevel is visible - Outputs the name and index of the chapter-data. 
+///@returns True if exactly one visible sublevel is found, false otherwise.
+bool UChapterControlWorldSubsystem::TryGetOnlyVisibleSublevel(FName& OutLevelName, int32& OutLevelIndex) const
 {
 	OutLevelName = NAME_None;
+	OutLevelIndex = INDEX_NONE;
 
 #if WITH_EDITOR
 	const UWorld* EditorWorld = GetWorld();
-	
+
 	if (!IsValid(EditorWorld))
 		return false;
 
-   // This function is intended to inspect the level-editor world,
-    // or than a PIE world - mainly anything that's not a packaged game.
+	// This helper is editor-focused and should not run for non-editor world types.
 	if (EditorWorld->WorldType != EWorldType::Editor &&
-	 EditorWorld->WorldType != EWorldType::PIE)
+		EditorWorld->WorldType != EWorldType::PIE)
 	{
 		return false;
 	}
-        
-    const ULevelStreaming* OnlyVisibleLevel = nullptr;
-    for (const ULevelStreaming* StreamingLevel :
-         EditorWorld->GetStreamingLevels())
-    {
-    	//skips if invalid
-        if (!IsValid(StreamingLevel))
-            continue;
-            
-        // Only consider ordinary sublevels represented in
-        // the editor's Levels collection.
-        if (!StreamingLevel->ShowInLevelCollection())
-            continue;
-    	
-        if (!StreamingLevel->GetShouldBeVisibleInEditor())
-            continue;
 
-        //stops if a visible level was already found - ensures it only ever finds one in the loop
-          if (OnlyVisibleLevel != nullptr)
-        {
-            UE_LOG(
-                LogTemp,
-                Warning,
-                TEXT("More than one visible sublevel: %s and %s"),
-                *OnlyVisibleLevel->GetWorldAssetPackageName(),
-                *StreamingLevel->GetWorldAssetPackageName()
-            );
+	const TArray<ULevelStreaming*>& StreamingLevels = EditorWorld->GetStreamingLevels();
+	const ULevelStreaming* OnlyVisibleLevel = nullptr;
 
-            return false;
-        }
+	for (const ULevelStreaming* StreamingLevel : StreamingLevels)
+	{
+		// Skip invalid streaming entries.
+		if (!IsValid(StreamingLevel))
+			continue;
 
-        OnlyVisibleLevel = StreamingLevel;
-    }
+		// Only consider sublevels represented in the editor's Levels collection.
+		if (!StreamingLevel->ShowInLevelCollection())
+			continue;
 
-	//stops if no levels were found
-    if (OnlyVisibleLevel == nullptr)
-        return false;
-        
-        FString PackageName =
-        OnlyVisibleLevel->GetWorldAssetPackageName();
+		// Only consider levels currently visible in the editor.
+		if (!StreamingLevel->GetShouldBeVisibleInEditor())
+			continue;
 
-	
-    PackageName = UWorld::RemovePIEPrefix(PackageName);
+		// Enforce exactly one visible sublevel.
+		if (OnlyVisibleLevel != nullptr)
+		{
+			UE_LOG(
+				LogTemp,
+				Warning,
+				TEXT("More than one visible sublevel: %s and %s"),
+				*OnlyVisibleLevel->GetWorldAssetPackageName(),
+				*StreamingLevel->GetWorldAssetPackageName()
+			);
 
-    OutLevelName = FName(
-        *FPackageName::GetShortName(PackageName)
-    );
+			return false;
+		}
 
-    UE_LOG(
-        LogTemp,
-        Warning,
-        TEXT("Only visible sublevel: %s"),
-        *OutLevelName.ToString()
-    );
+		OnlyVisibleLevel = StreamingLevel;
+	}
 
-    return true;
+	if (OnlyVisibleLevel == nullptr)
+		return false;
+
+	// Convert package path to level name.
+	FString PackageName = OnlyVisibleLevel->GetWorldAssetPackageName();
+	PackageName = UWorld::RemovePIEPrefix(PackageName);
+
+	OutLevelName = FName(*FPackageName::GetShortName(PackageName));
+
+	// Gets the index from chapter data ordering instead of streaming-level iteration order.
+	if (ChapterData == nullptr)
+		return false;
+
+	OutLevelIndex = ChapterData->LevelNameArray.IndexOfByKey(OutLevelName);
+	return OutLevelIndex != INDEX_NONE;
 #else
-    return false;//do nothing if not in editor
+	return false;
 #endif
 }
