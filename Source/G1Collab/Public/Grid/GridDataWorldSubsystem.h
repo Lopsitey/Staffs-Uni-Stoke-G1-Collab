@@ -79,4 +79,7 @@ class G1COLLAB_API UGridDataWorldSubsystem : public UWorldSubsystem
 	FAllCellsFoundSigniture OnAllCellsFound;
 	UPROPERTY(BlueprintAssignable,BlueprintCallable)
 	FOnSunUpdate OnSunUpdate;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FVector LevelCentre;
 };
