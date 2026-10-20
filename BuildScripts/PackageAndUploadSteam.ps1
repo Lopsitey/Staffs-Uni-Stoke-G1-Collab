@@ -237,6 +237,16 @@ try {
     New-Item -ItemType Directory -Force -Path $PackageOut | Out-Null
     New-Item -ItemType Directory -Force -Path $SteamPipeOut | Out-Null
 
+    $DefaultGameIni = Join-Path $ProjectRoot "Config\DefaultGame.ini"
+    $TreatWarningsAsErrorsOnCook = $false
+    if (Test-Path -LiteralPath $DefaultGameIni) {
+        $TreatWarningsMatch = Select-String -LiteralPath $DefaultGameIni -Pattern '^\s*bTreatWarningsAsErrorsOnCook\s*=\s*(True|False)\s*$' |
+            Select-Object -Last 1
+        if ($TreatWarningsMatch) {
+            $TreatWarningsAsErrorsOnCook = $TreatWarningsMatch.Matches[0].Groups[1].Value -eq "True"
+        }
+    }
+
     Write-Host "Project: $ProjectFile"
     Write-Host "Git branch: $BranchName"
     Write-Host "Steam target: $SteamTargetName"
@@ -245,10 +255,18 @@ try {
     Write-Host "Steam branch: $SteamBranch"
     Write-Host "Commit: $CommitHash"
     Write-Host "Configuration: $Configuration"
+    if ($TreatWarningsAsErrorsOnCook) {
+        Write-Host "Treat cook warnings as errors: ENABLED (cook will fail on packaging warnings)" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "Treat cook warnings as errors: DISABLED"
+    }
     Write-Host "Package output: $PackageOut"
     Write-Host "Log: $LogPath"
     Write-Host ""
 
+    # EditorDiscordRichPresence (engine Marketplace plugin) crashes cooks by calling
+    # FSlateApplication::Get() when UnrealEditor-Cmd has no Slate app. Disable it for packaging.
     $UatArgs = @(
         "BuildCookRun",
         "-project=$ProjectFile",
@@ -265,11 +283,15 @@ try {
         "-nodebuginfo",
         "-CrashReporter",
         "-NoP4",
-        "-utf8output"
+        "-utf8output",
+        "-DisablePlugins=EditorDiscordRichPresence",
+        "-AdditionalCookerOptions=-DisablePlugins=EditorDiscordRichPresence"
     )
 
-    & $RunUAT @UatArgs
-    Assert-NativeSuccess "Unreal packaging failed."
+    $UatLogPath = Join-Path $LogRoot "UAT-$Timestamp.log"
+    Write-Host "UAT log: $UatLogPath"
+    & $RunUAT @UatArgs 2>&1 | Tee-Object -FilePath $UatLogPath
+    Assert-NativeSuccess "Unreal packaging failed. UAT log: $UatLogPath"
 
     $Exe = Get-ChildItem -LiteralPath $PackageOut -Recurse -File -Filter "$GameTarget.exe" | Select-Object -First 1
     if (-not $Exe) {

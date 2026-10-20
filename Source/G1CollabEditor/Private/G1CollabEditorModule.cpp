@@ -5,7 +5,9 @@
 #include "HAL/PlatformProcess.h"
 #include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
+#include "Settings/ProjectPackagingSettings.h"
 #include "Styling/AppStyle.h"
+#include "Styling/SlateColor.h"
 #include "ToolMenus.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBorder.h"
@@ -132,7 +134,10 @@ private:
 		return true;
 	}
 
-	static ESteamUploadChoice OpenSteamUploadPrompt(const FString& GitBranch, const FString& SteamBranch)
+	static ESteamUploadChoice OpenSteamUploadPrompt(
+		const FString& GitBranch,
+		const FString& SteamBranch,
+		const bool bTreatWarningsAsErrorsOnCook)
 	{
 		ESteamUploadChoice Choice = ESteamUploadChoice::Cancel;
 
@@ -150,6 +155,18 @@ private:
 			FText::FromString(GitBranch),
 			FText::FromString(SteamBranch));
 
+		const FText WarningsAsErrorsText = bTreatWarningsAsErrorsOnCook
+			? LOCTEXT(
+				"TreatWarningsAsErrorsEnabled",
+				"Treat cook warnings as errors: ENABLED\nCook will fail on packaging warnings (Project Settings → Packaging).")
+			: LOCTEXT(
+				"TreatWarningsAsErrorsDisabled",
+				"Treat cook warnings as errors: DISABLED\nCook warnings will not fail packaging.");
+
+		const FLinearColor WarningsAsErrorsColor = bTreatWarningsAsErrorsOnCook
+			? FLinearColor(0.95f, 0.35f, 0.2f)
+			: FLinearColor(0.35f, 0.75f, 0.35f);
+
 		DialogWindow->SetContent(
 			SNew(SBorder)
 			.BorderImage(FAppStyle::GetBrush("ToolPanel.GroupBorder"))
@@ -159,10 +176,21 @@ private:
 
 				+ SVerticalBox::Slot()
 				.AutoHeight()
-				.Padding(0.0f, 0.0f, 0.0f, 18.0f)
+				.Padding(0.0f, 0.0f, 0.0f, 12.0f)
 				[
 					SNew(STextBlock)
 					.Text(Message)
+					.AutoWrapText(true)
+					.WrapTextAt(760.0f)
+				]
+
+				+ SVerticalBox::Slot()
+				.AutoHeight()
+				.Padding(0.0f, 0.0f, 0.0f, 18.0f)
+				[
+					SNew(STextBlock)
+					.Text(WarningsAsErrorsText)
+					.ColorAndOpacity(FSlateColor(WarningsAsErrorsColor))
 					.AutoWrapText(true)
 					.WrapTextAt(760.0f)
 				]
@@ -300,7 +328,14 @@ private:
 			return;
 		}
 
-		const ESteamUploadChoice UploadChoice = OpenSteamUploadPrompt(GitBranch, SteamBranch);
+		const UProjectPackagingSettings* PackagingSettings = GetDefault<UProjectPackagingSettings>();
+		const bool bTreatWarningsAsErrorsOnCook =
+			PackagingSettings != nullptr && PackagingSettings->bTreatWarningsAsErrorsOnCook;
+
+		const ESteamUploadChoice UploadChoice = OpenSteamUploadPrompt(
+			GitBranch,
+			SteamBranch,
+			bTreatWarningsAsErrorsOnCook);
 		if (UploadChoice == ESteamUploadChoice::Cancel)
 		{
 			return;
