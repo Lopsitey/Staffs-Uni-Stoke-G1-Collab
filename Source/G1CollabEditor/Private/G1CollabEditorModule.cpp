@@ -3,11 +3,10 @@
 #include "Framework/Commands/UIAction.h"
 #include "Framework/Application/SlateApplication.h"
 #include "HAL/PlatformProcess.h"
+#include "Misc/ConfigCacheIni.h"
 #include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
-#include "Settings/ProjectPackagingSettings.h"
 #include "Styling/AppStyle.h"
-#include "Styling/SlateColor.h"
 #include "ToolMenus.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBorder.h"
@@ -328,9 +327,12 @@ private:
 			return;
 		}
 
-		const UProjectPackagingSettings* PackagingSettings = GetDefault<UProjectPackagingSettings>();
-		const bool bTreatWarningsAsErrorsOnCook =
-			PackagingSettings != nullptr && PackagingSettings->bTreatWarningsAsErrorsOnCook;
+		bool bTreatWarningsAsErrorsOnCook = false;
+		GConfig->GetBool(
+			TEXT("/Script/UnrealEd.ProjectPackagingSettings"),
+			TEXT("bTreatWarningsAsErrorsOnCook"),
+			bTreatWarningsAsErrorsOnCook,
+			GGameIni);
 
 		const ESteamUploadChoice UploadChoice = OpenSteamUploadPrompt(
 			GitBranch,
